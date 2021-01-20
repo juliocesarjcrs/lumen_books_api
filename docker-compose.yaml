@@ -1,0 +1,28 @@
+version: "3.3"
+services:
+  backend:
+    container_name: lumenen_authors
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment: 
+    #   DB_HOST: host.docker.internal #db #192.168.56.1 #db
+    #   DB_DATABASE: laravel
+    #   DB_USERNAME: root #user
+    #   DB_PASSWORD: #root
+      # XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9000 remote_enable=1
+      XDEBUG_CONFIG: remote_host=host.docker.internal xdebug.mode=debug xdebug.start_with_request = yes xdebug.client_port = 9000 remote_enable=1
+      
+    ports:
+      - 8000:80 # con el 80 es cuando es v -host
+    # volumes:
+    #   - .:/var/www/html
+    # depends_on:
+    #   - db
+    networks:
+      - app
+networks: 
+  app:
+    driver: bridge
+# docker-compose up --build
+# docker-compose exec container_name sh
