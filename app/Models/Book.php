@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Lumen\Auth\Authorizable;
 
-class Author extends Model
+class Book extends Model
 {
     use  HasFactory;
 
@@ -17,7 +17,7 @@ class Author extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'gender','country'
+        'title', 'description','price','author_id'
     ];
 
 

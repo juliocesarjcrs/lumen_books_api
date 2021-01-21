@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Author;
-use App\Traits\ApiResponserTrait;
+use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Traits\ApiResponserTrait;
 
-class AuthorController extends Controller
+class BookController extends Controller
 {
     use ApiResponserTrait;
     /**
@@ -26,8 +26,8 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $authors = Author::all();
-        return $this->susccesResponse($authors);
+        $books = Book::all();
+        return $this->susccesResponse($books);
     }
     /**
      * Create an instance of Author
@@ -37,12 +37,13 @@ class AuthorController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'name' => 'required|max:255',
-            'gender' => 'required|max:255|in:male,female',
-            'country' => 'required|max:255',
+            'title' => 'required|max:255',
+            'description' => 'required|max:255',
+            'price' => 'required',
+            'author_id' => 'required',
         ];
         $this->validate($request, $rules);
-        $author = Author::create($request->all());
+        $author = Book::create($request->all());
         return $this->susccesResponse($author, Response::HTTP_CREATED);
 
     }
@@ -52,10 +53,10 @@ class AuthorController extends Controller
      *
      * @return Iluminate\Http\Response
      */
-    public function show($author)
+    public function show($book)
     {
-        $author = Author::findOrFail($author);
-        return $this->susccesResponse($author);
+        $book = Book::findOrFail($book);
+        return $this->susccesResponse($book);
 
     }
     /**
@@ -63,21 +64,22 @@ class AuthorController extends Controller
      *
      * @return Iluminate\Http\Response
      */
-    public function update(Request $request, $author)
+    public function update(Request $request, $book)
     {
         $rules = [
-            'name' => 'max:255',
-            'gender' => 'max:255|in:male,female',
-            'country' => 'max:255',
+            'title' => 'required|max:255',
+            'description' => 'required|max:255',
+            'price' => 'required',
+            'author_id' => 'required',
         ];
         $this->validate($request, $rules);
-        $author = Author::findOrFail($author);
-        $author->fill($request->all());
-        if($author->is_clean()){
+        $book = Book::findOrFail($book);
+        $book->fill($request->all());
+        if($book->is_clean()){
             return $this->errorResponse('at lea one value must change', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        $author->save();
-        return $this->susccesResponse($author, Response::HTTP_CREATED);
+        $book->save();
+        return $this->susccesResponse($book, Response::HTTP_CREATED);
 
 
     }
@@ -86,11 +88,11 @@ class AuthorController extends Controller
      *
      * @return Iluminate\Http\Response
      */
-    public function destroy($author)
+    public function destroy($book)
     {
-       $author = Author::findOrFail($author);
-       $author->delete();
-       return $this->susccesResponse($author, Response::HTTP_OK);
+       $book = Book::findOrFail($book);
+       $book->delete();
+       return $this->susccesResponse($book, Response::HTTP_OK);
 
 
     }
